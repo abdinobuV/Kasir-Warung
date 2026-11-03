@@ -33,6 +33,14 @@ Module ModuleHelper
     End Function
 
     ''' <summary>
+    ''' Mengembalikan CultureInfo id-ID yang sama untuk dipakai di tempat lain,
+    ''' misalnya DefaultCellStyle.FormatProvider pada kolom DataGridView.
+    ''' </summary>
+    Public Function BudayaId() As CultureInfo
+        Return budaya
+    End Function
+
+    ''' <summary>
     ''' Format tanggal panjang Indonesia, contoh: "Senin, 03 November 2025"
     ''' </summary>
     Public Function FormatTanggalPanjang(tanggal As Date) As String
