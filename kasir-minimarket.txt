@@ -201,5 +201,3 @@ PENANGANAN ERROR UMUM (jelaskan di Tahap 1)
 JIKA ADA YANG KURANG JELAS
 Tanyakan satu pertanyaan singkat sebelum lanjut, jangan menebak asumsi besar.
 Jika ada error saat saya jalankan, bantu telusuri penyebabnya langkah demi langkah.
-
-MULAI dari Tahap 1.

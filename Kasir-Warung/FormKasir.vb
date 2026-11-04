@@ -1,4 +1,6 @@
 ﻿Imports MySqlConnector
+Imports System.Drawing.Printing
+Imports System.Globalization
 
 ''' <summary>
 ''' Form utama Kasir Minimarket.
@@ -25,6 +27,17 @@ Public Class FormKasir
     ' Penanda saat txtBayar sedang diformat ulang, agar tidak berputar-putar
     Private sedangFormatBayar As Boolean = False
 
+    ' ============ Snapshot transaksi terakhir (Tahap 4) ============
+    ' Disimpan setelah pembayaran sukses supaya bisa dicetak sebagai
+    ' struk pada Tahap 5, tanpa perlu membaca database lagi.
+    Private noTransaksiTerakhir As String = ""
+    Private tanggalTransaksiTerakhir As Date = Date.MinValue
+    Private totalTerakhir As Decimal = 0
+    Private bayarTerakhir As Decimal = 0
+    Private kembaliTerakhir As Decimal = 0
+    Private itemsTerakhir As DataTable = Nothing   ' kolom: nama, jumlah, harga, subtotal
+    Private transaksiTerakhirAda As Boolean = False
+
     ' ============================================================
     ' ============  Tanggal & jam (Tahap 2)  =====================
     ' ============================================================
@@ -46,6 +59,7 @@ Public Class FormKasir
     Private Sub FormKasir_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Tampilkan tanggal/jam segera saat form dibuka (tanpa menunggu detik berikutnya)
         PerbaruiTanggalJam()
+        tmrJam.Enabled = True   ' nyalakan timer supaya jam berjalan terus tiap detik
 
         ' Font ikon disesuaikan dengan font yang tersedia di Windows ini,
         ' supaya ikon tetap tampil walau dibuka di Windows 10 maupun 11.
@@ -62,6 +76,7 @@ Public Class FormKasir
         ' ---- Tahap 3 ----
         SiapkanGrid()          ' hubungkan kolom grid dengan kolom recordset
         BuatKeranjang()        ' buat recordset keranjang (masih kosong)
+        SiapkanCetak()         ' siapkan PrintDocument untuk Tahap 5
         txtTotal.Text = FormatRupiah(0)
         txtKembalian.Text = FormatRupiah(0)
 
@@ -603,20 +618,428 @@ Public Class FormKasir
     ' ============================================================
 
     Private Sub btnKeluar_Click(sender As Object, e As EventArgs) Handles btnKeluar.Click
-        Dim jawaban As DialogResult = MessageBox.Show(
-            "Tutup aplikasi Kasir Minimarket?",
-            "Keluar",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question)
-
-        If jawaban = DialogResult.Yes Then
+        ' Dialog seragam FormPesan (tombol Yes/No) supaya tampil sama
+        ' dengan tema biru program, bukan MessageBox polos.
+        Dim dlg As New FormPesan("Keluar", "Tutup aplikasi Kasir Minimarket?", True)
+        If dlg.ShowDialog(Me) = DialogResult.Yes Then
             Close()
         End If
     End Sub
 
-    ' CATATAN TAHAP BERIKUTNYA:
-    ' btnProses  -> Tahap 4 (INSERT transaksi + detail + pengurangan stok dalam 1 transaction)
-    ' btnCetak   -> Tahap 5 (PrintDocument struk, aktif setelah transaksi sukses)
-    ' F2/F3      -> Tahap 6 (FormDataBarang, FormRiwayat)
+    ' ============================================================
+    ' ============  Proses Pembayaran (Tahap 4)  ================
+    ' ============================================================
+
+    Private Sub btnProses_Click(sender As Object, e As EventArgs) Handles btnProses.Click
+        ProsesPembayaran()
+    End Sub
+
+    ''' <summary>
+    ''' Menyimpan transaksi penjualan ke database.
+    ''' Nomor, header, detail, dan pengurangan stok berjalan dalam SATU
+    ''' MySqlTransaction: ada satu langkah yang gagal = seluruhnya dibatalkan
+    ''' (rollback), sehingga data tidak pernah tersimpan setengah jadi.
+    ''' </summary>
+    Private Sub ProsesPembayaran()
+        ' ---------- Validasi 1: keranjang tidak boleh kosong ----------
+        If dtKeranjang Is Nothing OrElse dtKeranjang.Rows.Count = 0 Then
+            FormPesan.Tampilkan(Me,
+                "Proses Pembayaran",
+                "Keranjang masih kosong." & vbCrLf &
+                "Tambahkan barang dulu sebelum memproses pembayaran.",
+                FormPesan.JenisPesan.Informasi)
+            txtKodeBarang.Focus()
+            Return
+        End If
+
+        ' ---------- Validasi 2: bayar harus >= total ----------
+        Dim total As Decimal = ParseRupiah(txtTotal.Text)
+        Dim bayar As Decimal = ParseRupiah(txtBayar.Text)
+
+        If bayar < total Then
+            FormPesan.Tampilkan(Me,
+                "Proses Pembayaran",
+                "Uang bayar kurang dari total belanja." & vbCrLf & vbCrLf &
+                "Total : " & FormatRupiah(total) & vbCrLf &
+                "Bayar : " & FormatRupiah(bayar),
+                FormPesan.JenisPesan.Peringatan)
+            txtBayar.Focus()
+            txtBayar.SelectAll()
+            Return
+        End If
+
+        Dim kembali As Decimal = bayar - total
+        Dim noTransaksi As String = ""
+        Dim tanggalTransaksi As Date = DateTime.Now
+
+        Try
+            Using conn As MySqlConnection = BuatKoneksi()
+                conn.Open()
+
+                ' Satu transaksi database untuk seluruh rangkaian penyimpanan
+                Using trans As MySqlTransaction = conn.BeginTransaction()
+                    Try
+                        ' (1) Nomor urut per hari, dihitung DI DALAM transaksi ini
+                        noTransaksi = BuatNomorTransaksi(conn, trans)
+
+                        ' (2) Simpan kepala transaksi
+                        InsertTransaksi(conn, trans, noTransaksi, tanggalTransaksi,
+                                        total, bayar, kembali)
+
+                        ' (3) Simpan tiap item, lalu kurangi stoknya
+                        For Each baris As DataRow In dtKeranjang.Rows
+                            Dim kode As String = baris("kode").ToString()
+                            Dim nama As String = baris("nama").ToString()
+                            Dim jumlah As Integer = CInt(baris("jumlah"))
+                            Dim hargaSatuan As Decimal = CDec(baris("harga"))
+                            Dim subtotal As Decimal = CDec(baris("subtotal"))
+
+                            InsertDetail(conn, trans, noTransaksi, kode,
+                                         jumlah, hargaSatuan, subtotal)
+
+                            ' UPDATE memakai syarat stok >= jumlah.
+                            ' RowsAffected = 0 berarti stok tidak cukup
+                            ' (bisa saja baru terjual di kasir lain).
+                            If Not KurangiStok(conn, trans, kode, jumlah) Then
+                                trans.Rollback()   ' batalkan semua langkah di atas
+
+                                FormPesan.Tampilkan(Me,
+                                    "Proses Pembayaran",
+                                    "Transaksi dibatalkan karena stok tidak cukup." & vbCrLf & vbCrLf &
+                                    "Barang          : " & nama & vbCrLf &
+                                    "Jumlah diminta  : " & jumlah & vbCrLf & vbCrLf &
+                                    "Silakan kurangi jumlah barang tersebut di keranjang.",
+                                    FormPesan.JenisPesan.Peringatan)
+                                Return
+                            End If
+                        Next
+
+                        trans.Commit()   ' semua langkah berhasil: simpan permanen
+                    Catch ex As Exception
+                        ' Pastikan transaksi batal bila error terjadi di tengah jalan
+                        Try
+                            trans.Rollback()
+                        Catch
+                            ' diabaikan: bisa jadi rollback sudah dilakukan di atas
+                        End Try
+                        Throw
+                    End Try
+                End Using
+            End Using
+        Catch ex As MySqlException
+            FormPesan.Tampilkan(Me,
+                "Proses Pembayaran",
+                "Gagal menyimpan transaksi." & vbCrLf & vbCrLf & ex.Message,
+                FormPesan.JenisPesan.Kesalahan)
+            Return
+        Catch ex As Exception
+            FormPesan.Tampilkan(Me,
+                "Proses Pembayaran",
+                "Terjadi kesalahan saat memproses pembayaran." & vbCrLf & vbCrLf & ex.Message,
+                FormPesan.JenisPesan.Kesalahan)
+            Return
+        End Try
+
+        ' ---------- Berhasil: simpan snapshot untuk struk (Tahap 5) ----------
+        SimpanSnapshot(noTransaksi, tanggalTransaksi, total, bayar, kembali)
+
+        btnCetak.Enabled = True    ' struk baru boleh dicetak setelah transaksi sukses
+
+        ' Bersih-bersih form untuk transaksi berikutnya
+        dtKeranjang.Clear()
+        PerbaruiNomor()
+        txtBayar.Text = ""
+        HitungTotal()
+        KosongkanInput()
+        txtKodeBarang.Focus()
+
+        FormPesan.Tampilkan(Me,
+            "Proses Pembayaran",
+            "Transaksi berhasil disimpan." & vbCrLf & vbCrLf &
+            "No Transaksi : " & noTransaksi & vbCrLf &
+            "Total    : " & FormatRupiah(total) & vbCrLf &
+            "Bayar    : " & FormatRupiah(bayar) & vbCrLf &
+            "Kembali  : " & FormatRupiah(kembali),
+            FormPesan.JenisPesan.Sukses)
+    End Sub
+
+    ''' <summary>
+    ''' Membuat nomor transaksi TRX-yyyyMMdd-001 (urut per hari).
+    ''' Dihitung di dalam transaksi database yang sama supaya dua kasir
+    ''' tidak pernah mendapat nomor kembar.
+    ''' </summary>
+    Private Function BuatNomorTransaksi(conn As MySqlConnection,
+                                        trans As MySqlTransaction) As String
+        ' yyyyMMdd harus pola tetap, jadi memakai budaya Invariant
+        ' (urutan tahun-bulan-tanggal, semua digit)
+        Dim prefix As String = "TRX-" &
+            DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture)
+
+        Dim urut As Integer = 1   ' transaksi pertama hari ini
+
+        Using cmd As New MySqlCommand(
+                "SELECT no_transaksi FROM transaksi " &
+                "WHERE no_transaksi LIKE @prefix " &
+                "ORDER BY no_transaksi DESC LIMIT 1", conn, trans)
+            cmd.Parameters.AddWithValue("@prefix", prefix & "-%")
+
+            Dim hasil As Object = cmd.ExecuteScalar()
+            If TypeOf hasil Is String Then
+                ' Contoh hasil: TRX-20261103-002 -> ambil "002" lalu +1
+                Dim bagian As String() = hasil.ToString().Split("-"c)
+                Dim angka As Integer = 0
+                If bagian.Length > 0 AndAlso
+                   Integer.TryParse(bagian(bagian.Length - 1), angka) Then
+                    urut = angka + 1
+                End If
+            End If
+        End Using
+
+        Return prefix & "-" & urut.ToString("D3", CultureInfo.InvariantCulture)
+    End Function
+
+    ''' <summary>INSERT ke tabel transaksi (kepala transaksi).</summary>
+    Private Sub InsertTransaksi(conn As MySqlConnection, trans As MySqlTransaction,
+                                no As String, tanggal As Date,
+                                total As Decimal, bayar As Decimal, kembali As Decimal)
+        Using cmd As New MySqlCommand(
+                "INSERT INTO transaksi (no_transaksi, tanggal, total, bayar, kembali) " &
+                "VALUES (@no, @tanggal, @total, @bayar, @kembali)", conn, trans)
+            cmd.Parameters.AddWithValue("@no", no)
+            cmd.Parameters.AddWithValue("@tanggal", tanggal)
+            cmd.Parameters.AddWithValue("@total", total)
+            cmd.Parameters.AddWithValue("@bayar", bayar)
+            cmd.Parameters.AddWithValue("@kembali", kembali)
+            cmd.ExecuteNonQuery()
+        End Using
+    End Sub
+
+    ''' <summary>INSERT satu baris ke tabel detail_transaksi.</summary>
+    Private Sub InsertDetail(conn As MySqlConnection, trans As MySqlTransaction,
+                             no As String, kode As String, jumlah As Integer,
+                             hargaSatuan As Decimal, subtotal As Decimal)
+        Using cmd As New MySqlCommand(
+                "INSERT INTO detail_transaksi " &
+                "(no_transaksi, kode_barang, jumlah, harga_satuan, subtotal) " &
+                "VALUES (@no, @kode, @jumlah, @harga, @subtotal)", conn, trans)
+            cmd.Parameters.AddWithValue("@no", no)
+            cmd.Parameters.AddWithValue("@kode", kode)
+            cmd.Parameters.AddWithValue("@jumlah", jumlah)
+            cmd.Parameters.AddWithValue("@harga", hargaSatuan)
+            cmd.Parameters.AddWithValue("@subtotal", subtotal)
+            cmd.ExecuteNonQuery()
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Mengurangi stok satu barang. Syarat stok >= jumlah ada di SQL,
+    ''' sehingga stok tidak akan pernah menjadi minus.
+    ''' Mengembalikan False bila stok tidak mencukupi.
+    ''' </summary>
+    Private Function KurangiStok(conn As MySqlConnection, trans As MySqlTransaction,
+                                 kode As String, jumlah As Integer) As Boolean
+        Using cmd As New MySqlCommand(
+                "UPDATE barang SET stok = stok - @jumlah " &
+                "WHERE kode_barang = @kode AND stok >= @jumlah", conn, trans)
+            cmd.Parameters.AddWithValue("@jumlah", jumlah)
+            cmd.Parameters.AddWithValue("@kode", kode)
+            Return cmd.ExecuteNonQuery() > 0
+        End Using
+    End Function
+
+    ''' <summary>
+    ''' Menyalin isi keranjang ke memori sebagai persiapan struk (Tahap 5),
+    ''' supaya tidak perlu membaca database lagi saat mencetak.
+    ''' </summary>
+    Private Sub SimpanSnapshot(no As String, tanggal As Date,
+                               total As Decimal, bayar As Decimal, kembali As Decimal)
+        noTransaksiTerakhir = no
+        tanggalTransaksiTerakhir = tanggal
+        totalTerakhir = total
+        bayarTerakhir = bayar
+        kembaliTerakhir = kembali
+
+        itemsTerakhir = New DataTable("struk")
+        itemsTerakhir.Columns.Add("nama", GetType(String))
+        itemsTerakhir.Columns.Add("jumlah", GetType(Integer))
+        itemsTerakhir.Columns.Add("harga", GetType(Decimal))
+        itemsTerakhir.Columns.Add("subtotal", GetType(Decimal))
+
+        For Each baris As DataRow In dtKeranjang.Rows
+            itemsTerakhir.Rows.Add(
+                baris("nama").ToString(),
+                CInt(baris("jumlah")),
+                CDec(baris("harga")),
+                CDec(baris("subtotal")))
+        Next
+
+        transaksiTerakhirAda = True
+    End Sub
+
+    ' ============================================================
+    ' ============  Cetak Struk (Tahap 5)  =========================
+    ' ============================================================
+
+    Private struk As PrintDocument
+    Private pratinjau As PrintPreviewDialog
+
+    ''' <summary>
+    ''' Menyiapkan PrintDocument dan PrintPreviewDialog di kode (bukan di
+    ''' Designer) supaya file Designer tetap milik Tahap 2 dan tidak bentrok
+    ''' saat digabung.
+    ''' </summary>
+    Private Sub SiapkanCetak()
+        struk = New PrintDocument()
+        ' Struk mode kasir: kertas sempit, orientasi tegak
+        struk.DefaultPageSettings.PaperSize = New PaperSize("Struk", 300, 800)
+        struk.DefaultPageSettings.Margins = New Margins(30, 30, 30, 30)
+        AddHandler struk.PrintPage, AddressOf Struk_PrintPage
+
+        pratinjau = New PrintPreviewDialog()
+        pratinjau.Document = struk
+        pratinjau.Text = "Cetak Struk - Minimarket Sejahtera"
+    End Sub
+
+    ''' <summary>
+    ''' Tombol Cetak Struk. Hanya aktif setelah transaksi sukses (Tahap 4),
+    ''' lalu menampilkan pratinjau sebelum mencetak.
+    ''' </summary>
+    Private Sub btnCetak_Click(sender As Object, e As EventArgs) Handles btnCetak.Click
+        ' Belum ada transaksi sukses: tidak ada struk untuk dicetak
+        If Not transaksiTerakhirAda OrElse itemsTerakhir Is Nothing OrElse itemsTerakhir.Rows.Count = 0 Then
+            FormPesan.Tampilkan(Me,
+                "Cetak Struk",
+                "Belum ada transaksi untuk dicetak." & vbCrLf &
+                "Selesaikan Proses Pembayaran terlebih dahulu.",
+                FormPesan.JenisPesan.Informasi)
+            Return
+        End If
+
+        ' Pastikan tugas cetak siap (dibuat sekali di FormKasir_Load)
+        If struk Is Nothing Then SiapkanCetak()
+
+        pratinjau.ShowDialog(Me)
+    End Sub
+
+    ''' <summary>
+    ''' Menggambar struk pada kertas.
+    ''' Font monospace (Courier New / Consolas) dipakai supaya kolom
+    ''' terjajar rapi seperti struk toko beneran.
+    ''' </summary>
+    Private Sub Struk_PrintPage(sender As Object, e As PrintPageEventArgs)
+        If Not transaksiTerakhirAda OrElse itemsTerakhir Is Nothing Then
+            e.HasMorePages = False
+            Return
+        End If
+
+        ' Baris-baris struk: huruf mono -> posisi selalu rata
+        Dim fontJudul As New Font("Courier New", 14, FontStyle.Bold)
+        Dim fontBiasa As New Font("Courier New", 10, FontStyle.Regular)
+        Dim fontTebal As New Font("Courier New", 10, FontStyle.Bold)
+
+        Dim x As Single = e.MarginBounds.Left
+        Dim y As Single = e.MarginBounds.Top
+        Dim lebar As Single = e.MarginBounds.Width
+        Dim tinggiBaris As Single = fontBiasa.GetHeight(e.Graphics) + 2
+
+        ' --- Kepala struk ---
+        TulisBerbaris(e.Graphics, fontJudul, x, y, lebar, "Minimarket Sejahtera")
+        y += tinggiBaris + tinggiBaris
+
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, "Belanja Mudah, Harga Bersahabat")
+        y += tinggiBaris
+
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, "No Transaksi : " & noTransaksiTerakhir)
+        y += tinggiBaris
+
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar,
+                      "Tanggal      : " & FormatTanggalPanjang(tanggalTransaksiTerakhir) & " " & FormatJam(tanggalTransaksiTerakhir))
+        y += tinggiBaris
+
+        ' Garis pemisah menandakan ganti bagian
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, New String("-"c, 32))
+        y += tinggiBaris
+
+        ' --- Daftar item: nama, jumlah x harga, subtotal ---
+        For Each baris As DataRow In itemsTerakhir.Rows
+            Dim nama As String = baris("nama").ToString()
+            Dim jumlah As Integer = CInt(baris("jumlah"))
+            Dim harga As Decimal = CDec(baris("harga"))
+            Dim subtotal As Decimal = CDec(baris("subtotal"))
+
+            ' Nama panjang dipotong supaya tidak merusak lebar struk
+            TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, Potong(nama, 32))
+            y += tinggiBaris
+
+            Dim rincian As String = jumlah.ToString(BudayaId()) & " x " & FormatRupiah(harga)
+            TulisKanan(e.Graphics, fontBiasa, x, y, lebar, rincian, FormatRupiah(subtotal))
+            y += tinggiBaris
+        Next
+
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, New String("-"c, 32))
+        y += tinggiBaris
+
+        ' --- Total / Bayar / Kembali ---
+        TulisKanan(e.Graphics, fontTebal, x, y, lebar, "Total", FormatRupiah(totalTerakhir))
+        y += tinggiBaris
+        TulisKanan(e.Graphics, fontBiasa, x, y, lebar, "Bayar", FormatRupiah(bayarTerakhir))
+        y += tinggiBaris
+        TulisKanan(e.Graphics, fontTebal, x, y, lebar, "Kembali", FormatRupiah(kembaliTerakhir))
+        y += tinggiBaris
+
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, New String("-"c, 32))
+        y += tinggiBaris
+
+        TulisBerbaris(e.Graphics, fontJudul, x, y, lebar, "Terima Kasih")
+        y += tinggiBaris
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, "atas Kunjungan Anda")
+        y += tinggiBaris
+
+        TulisBerbaris(e.Graphics, fontBiasa, x, y, lebar, New String("-"c, 32))
+
+        fontJudul.Dispose()
+        fontBiasa.Dispose()
+        fontTebal.Dispose()
+
+        e.HasMorePages = False   ' struk selalu satu halaman
+    End Sub
+
+    ''' <summary>
+    ''' Menulis teks rata kiri pada lebar penuh, di tengah garis.
+    ''' </summary>
+    Private Sub TulisBerbaris(g As Graphics, font As Font,
+                              x As Single, y As Single, lebar As Single, teks As String)
+        Using brush As New SolidBrush(Color.Black)
+            g.DrawString(teks, font, brush, x, y)
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Menulis label di kiri dan angka di kanan pada baris yang sama.
+    ''' </summary>
+    Private Sub TulisKanan(g As Graphics, font As Font,
+                           x As Single, y As Single, lebar As Single,
+                           label As String, nilai As String)
+        Using brush As New SolidBrush(Color.Black)
+            g.DrawString(label, font, brush, x, y)
+
+            ' Geser ke kanan: akhir nilai menempel di tepi kanan kertas
+            Dim lebarNilai As Single = g.MeasureString(nilai, font).Width
+            g.DrawString(nilai, font, brush, x + lebar - lebarNilai, y)
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Memotong teks kepanjangan sesuai lebar struk (font mono).
+    ''' </summary>
+    Private Function Potong(teks As String, maks As Integer) As String
+        If teks.Length <= maks Then Return teks
+        Return teks.Substring(0, maks - 3) & "..."
+    End Function
+
+    ' ============================================================
+    ' ============  Catatan tahap berikutnya  ====================
+    ' ============================================================
+    ' F2 / F3   -> Tahap 6 (FormDataBarang, FormRiwayat)
 
 End Class
