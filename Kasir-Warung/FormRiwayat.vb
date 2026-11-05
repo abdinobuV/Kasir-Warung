@@ -1,4 +1,4 @@
-﻿Imports MySqlConnector
+Imports MySqlConnector
 
 ''' <summary>
 ''' Form riwayat transaksi (Tahap 6, dibuka pakai tombol F3 dari FormKasir).
@@ -20,10 +20,21 @@ Public Class FormRiwayat
 
     Private Sub FormRiwayat_Load(sender As Object, e As EventArgs) Handles Me.Load
         ' Ikon memakai font ikon yang benar-benar tersedia di Windows ini
-        lblIkon.Font = BuatFontIkon(18)
+        lblIkon.Font = BuatFontIkon(16)
+
+        ' Gaya sel utama ala POS: font tegas + jarak tepi (padding) nyaman dibaca
+        Dim gayaSel As New DataGridViewCellStyle()
+        gayaSel.Font = New Font("Segoe UI", 10.0!, FontStyle.Regular, GraphicsUnit.Point)
+        gayaSel.Padding = New Padding(5, 2, 5, 2)
+        gayaSel.SelectionBackColor = Color.FromArgb(0, 120, 215)
+        gayaSel.SelectionForeColor = Color.White
+        dgvTransaksi.DefaultCellStyle = gayaSel
+        dgvDetail.DefaultCellStyle = gayaSel
+        dgvTransaksi.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(244, 248, 254)
+        dgvDetail.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(244, 248, 254)
 
         ' Kolom uang ditampilkan format Rp (id-ID)
-        Dim gayaRupiah As New DataGridViewCellStyle()
+        Dim gayaRupiah As New DataGridViewCellStyle(gayaSel)
         gayaRupiah.Format = "Rp#,##0"
         gayaRupiah.FormatProvider = BudayaId()
         gayaRupiah.Alignment = DataGridViewContentAlignment.MiddleRight
@@ -33,17 +44,21 @@ Public Class FormRiwayat
         colDHarga.DefaultCellStyle = gayaRupiah
         colDSubtotal.DefaultCellStyle = gayaRupiah
 
-        Dim gayaTengah As New DataGridViewCellStyle()
+        Dim gayaTengah As New DataGridViewCellStyle(gayaSel)
         gayaTengah.Alignment = DataGridViewContentAlignment.MiddleCenter
+        colDNo.DefaultCellStyle = gayaTengah
         colDJumlah.DefaultCellStyle = gayaTengah
 
         ' Kolom tanggal format Indonesia
-        colTanggal.DefaultCellStyle.Format = "dd/MM/yyyy HH:mm"
-        colTanggal.DefaultCellStyle.FormatProvider = BudayaId()
+        Dim gayaTanggal As New DataGridViewCellStyle(gayaSel)
+        gayaTanggal.Format = "dd/MM/yyyy HH:mm"
+        gayaTanggal.FormatProvider = BudayaId()
+        colTanggal.DefaultCellStyle = gayaTanggal
 
         ' Header grid bold agar sama dengan gaya FormKasir
         Dim gayaHeader As New DataGridViewCellStyle()
-        gayaHeader.Font = New Font(Font, FontStyle.Bold)
+        gayaHeader.Font = New Font("Segoe UI", 10.0!, FontStyle.Bold, GraphicsUnit.Point)
+        gayaHeader.Padding = New Padding(5, 0, 5, 0)
         dgvTransaksi.ColumnHeadersDefaultCellStyle = gayaHeader
         dgvDetail.ColumnHeadersDefaultCellStyle = gayaHeader
 

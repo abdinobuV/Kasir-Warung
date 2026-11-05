@@ -1,4 +1,4 @@
-﻿Imports MySqlConnector
+Imports MySqlConnector
 
 ''' <summary>
 ''' Form CRUD master barang (Tahap 6, dibuka pakai tombol F2 dari FormKasir).
@@ -22,22 +22,32 @@ Public Class FormDataBarang
 
     Private Sub FormDataBarang_Load(sender As Object, e As EventArgs) Handles Me.Load
         ' Ikon memakai font ikon yang benar-benar tersedia di Windows ini
-        lblIkon.Font = BuatFontIkon(18)
+        lblIkon.Font = BuatFontIkon(16)
+
+        ' Gaya sel utama ala POS: font sedikit lebih tegas + jarak tepi (padding) nyaman dibaca
+        Dim gayaSel As New System.Windows.Forms.DataGridViewCellStyle()
+        gayaSel.Font = New Font("Segoe UI", 10.5!, FontStyle.Regular, GraphicsUnit.Point)
+        gayaSel.Padding = New Padding(6, 2, 6, 2)
+        gayaSel.SelectionBackColor = Color.FromArgb(0, 120, 215)
+        gayaSel.SelectionForeColor = Color.White
+        dgvBarang.DefaultCellStyle = gayaSel
+        dgvBarang.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(244, 248, 254)
 
         ' Kolom harga ditampilkan dalam format Rupiah (id-ID)
-        Dim gayaRupiah As New System.Windows.Forms.DataGridViewCellStyle()
+        Dim gayaRupiah As New System.Windows.Forms.DataGridViewCellStyle(gayaSel)
         gayaRupiah.Format = "Rp#,##0"
         gayaRupiah.FormatProvider = BudayaId()
         gayaRupiah.Alignment = DataGridViewContentAlignment.MiddleRight
         colHarga.DefaultCellStyle = gayaRupiah
 
-        Dim gayaTengah As New System.Windows.Forms.DataGridViewCellStyle()
+        Dim gayaTengah As New System.Windows.Forms.DataGridViewCellStyle(gayaSel)
         gayaTengah.Alignment = DataGridViewContentAlignment.MiddleCenter
         colStok.DefaultCellStyle = gayaTengah
 
         ' Header grid bold agar sama dengan gaya FormKasir
         Dim gayaHeader As New System.Windows.Forms.DataGridViewCellStyle()
-        gayaHeader.Font = New Font(Font, FontStyle.Bold)
+        gayaHeader.Font = New Font("Segoe UI", 10.5!, FontStyle.Bold, GraphicsUnit.Point)
+        gayaHeader.Padding = New Padding(6, 0, 6, 0)
         dgvBarang.ColumnHeadersDefaultCellStyle = gayaHeader
 
         tblIsi.BringToFront()
