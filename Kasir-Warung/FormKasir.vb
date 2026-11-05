@@ -1078,7 +1078,7 @@ Public Class FormKasir
     End Sub
 
     ''' <summary>Menampilkan halaman Kelola Barang.</summary>
-    Private Sub TampilkanHalamanBarang()
+    Public Sub TampilkanHalamanBarang()
         tblUtama.Visible = False
 
         If _halamanBarang Is Nothing Then SiapkanNavigasi()
@@ -1089,7 +1089,7 @@ Public Class FormKasir
     End Sub
 
     ''' <summary>Menampilkan halaman Riwayat Transaksi.</summary>
-    Private Sub TampilkanHalamanRiwayat()
+    Public Sub TampilkanHalamanRiwayat()
         tblUtama.Visible = False
 
         If _halamanRiwayat Is Nothing Then SiapkanNavigasi()

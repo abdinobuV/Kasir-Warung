@@ -40,6 +40,8 @@ Public Class FormDataBarang
         gayaHeader.Font = New Font(Font, FontStyle.Bold)
         dgvBarang.ColumnHeadersDefaultCellStyle = gayaHeader
 
+        tblIsi.BringToFront()
+
         MuatDataBarang()
         txtCari.Focus()
     End Sub
@@ -467,6 +469,22 @@ Public Class FormDataBarang
     ''' </summary>
     Private Sub btnTutup_Click(sender As Object, e As EventArgs) Handles btnTutup.Click
         DirectCast(ParentForm, FormKasir).TampilkanHalamanKasir()
+    End Sub
+
+    ''' <summary>Tombol Refresh: menarik ulang data barang dari database.</summary>
+    Private Sub btnRefresh_Click(sender As Object, e As EventArgs) Handles btnRefresh.Click
+        MuatDataBarang()
+        TerapkanFilter()
+    End Sub
+
+    ' ---------------- Navigasi halaman ----------------
+
+    Private Sub btnHalKasir_Click(sender As Object, e As EventArgs) Handles btnHalKasir.Click
+        DirectCast(ParentForm, FormKasir).TampilkanHalamanKasir()
+    End Sub
+
+    Private Sub btnHalRiwayat_Click(sender As Object, e As EventArgs) Handles btnHalRiwayat.Click
+        DirectCast(ParentForm, FormKasir).TampilkanHalamanRiwayat()
     End Sub
 
 End Class

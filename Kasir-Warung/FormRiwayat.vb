@@ -47,6 +47,8 @@ Public Class FormRiwayat
         dgvTransaksi.ColumnHeadersDefaultCellStyle = gayaHeader
         dgvDetail.ColumnHeadersDefaultCellStyle = gayaHeader
 
+        tblIsi.BringToFront()
+
         ' Awalnya tampilkan semua hari ini
         dtpDari.Value = DateTime.Today
         dtpSampai.Value = DateTime.Today
@@ -109,6 +111,8 @@ Public Class FormRiwayat
 
         lblJudulDetail.Text = "Pilih transaksi untuk melihat detail"
         MuatDetail()
+        PerbaruiTombolNavigasi()
+        PerbaruiPosisi()
     End Sub
 
     ''' <summary>
@@ -186,6 +190,8 @@ Public Class FormRiwayat
     ' Setiap kali baris master berubah, grid detail ikut diperbarui (master-detail)
     Private Sub bsTransaksi_PositionChanged(sender As Object, e As EventArgs) Handles bsTransaksi.PositionChanged
         MuatDetail()
+        PerbaruiTombolNavigasi()
+        PerbaruiPosisi()
     End Sub
 
     ' Klik tombol Tampilkan = menerapkan filter rentang tanggal
@@ -218,6 +224,63 @@ Public Class FormRiwayat
     ''' </summary>
     Private Sub btnTutup_Click(sender As Object, e As EventArgs) Handles btnTutup.Click
         DirectCast(ParentForm, FormKasir).TampilkanHalamanKasir()
+    End Sub
+
+    ' ---------------- Navigasi record ----------------
+
+    Private Sub PerbaruiTombolNavigasi()
+        If bsTransaksi Is Nothing Then
+            btnPertama.Enabled = False
+            btnSebelumnya.Enabled = False
+            btnBerikutnya.Enabled = False
+            btnTerakhir.Enabled = False
+            Return
+        End If
+        Dim adaRecord As Boolean = bsTransaksi.Count > 0
+        Dim diAwal As Boolean = (Not adaRecord) OrElse bsTransaksi.Position <= 0
+        Dim diAkhir As Boolean = (Not adaRecord) OrElse bsTransaksi.Position >= bsTransaksi.Count - 1
+        btnPertama.Enabled = adaRecord AndAlso Not diAwal
+        btnSebelumnya.Enabled = adaRecord AndAlso Not diAwal
+        btnBerikutnya.Enabled = adaRecord AndAlso Not diAkhir
+        btnTerakhir.Enabled = adaRecord AndAlso Not diAkhir
+    End Sub
+
+    Private Sub PerbaruiPosisi()
+        If bsTransaksi Is Nothing OrElse bsTransaksi.Count = 0 Then
+            lblPosisi.Text = "Record 0 dari 0"
+        Else
+            lblPosisi.Text = "Record " & (bsTransaksi.Position + 1) & " dari " & bsTransaksi.Count
+        End If
+    End Sub
+
+    Private Sub btnPertama_Click(sender As Object, e As EventArgs) Handles btnPertama.Click
+        If bsTransaksi Is Nothing OrElse bsTransaksi.Count = 0 Then Return
+        bsTransaksi.MoveFirst()
+    End Sub
+
+    Private Sub btnSebelumnya_Click(sender As Object, e As EventArgs) Handles btnSebelumnya.Click
+        If bsTransaksi Is Nothing OrElse bsTransaksi.Count = 0 Then Return
+        bsTransaksi.MovePrevious()
+    End Sub
+
+    Private Sub btnBerikutnya_Click(sender As Object, e As EventArgs) Handles btnBerikutnya.Click
+        If bsTransaksi Is Nothing OrElse bsTransaksi.Count = 0 Then Return
+        bsTransaksi.MoveNext()
+    End Sub
+
+    Private Sub btnTerakhir_Click(sender As Object, e As EventArgs) Handles btnTerakhir.Click
+        If bsTransaksi Is Nothing OrElse bsTransaksi.Count = 0 Then Return
+        bsTransaksi.MoveLast()
+    End Sub
+
+    ' ---------------- Navigasi halaman ----------------
+
+    Private Sub btnHalKasir_Click(sender As Object, e As EventArgs) Handles btnHalKasir.Click
+        DirectCast(ParentForm, FormKasir).TampilkanHalamanKasir()
+    End Sub
+
+    Private Sub btnHalData_Click(sender As Object, e As EventArgs) Handles btnHalData.Click
+        DirectCast(ParentForm, FormKasir).TampilkanHalamanBarang()
     End Sub
 
 End Class

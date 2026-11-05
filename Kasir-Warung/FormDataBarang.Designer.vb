@@ -54,6 +54,11 @@ Partial Class FormDataBarang
         Me.btnBerikutnya = New Global.Kasir_Warung.TombolBulat()
         Me.btnTerakhir = New Global.Kasir_Warung.TombolBulat()
         Me.btnTutup = New Global.Kasir_Warung.TombolBulat()
+        Me.btnRefresh = New Global.Kasir_Warung.TombolBulat()
+        Me.btnHalKasir = New Global.Kasir_Warung.TombolBulat()
+        Me.btnHalData = New Global.Kasir_Warung.TombolBulat()
+        Me.btnHalRiwayat = New Global.Kasir_Warung.TombolBulat()
+        Me.tblIsi = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlHeader.SuspendLayout()
         Me.pnlCariTop.SuspendLayout()
         CType(Me.dgvBarang, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -108,6 +113,7 @@ Partial Class FormDataBarang
         Me.pnlCariTop.Controls.Add(Me.pnlCari)
         Me.pnlCariTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlCariTop.Location = New System.Drawing.Point(0, 72)
+        Me.pnlCariTop.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
         Me.pnlCariTop.Name = "pnlCariTop"
         Me.pnlCariTop.Size = New System.Drawing.Size(880, 62)
         '
@@ -158,7 +164,9 @@ Partial Class FormDataBarang
         Me.dgvBarang.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvBarang.EnableHeadersVisualStyles = False
         Me.dgvBarang.GridColor = System.Drawing.Color.FromArgb(200, 210, 225)
-        Me.dgvBarang.Location = New System.Drawing.Point(0, 134)
+        Me.dgvBarang.Location = New System.Drawing.Point(0, 0)
+        Me.dgvBarang.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.dgvBarang.MinimumSize = New System.Drawing.Size(0, 80)
         Me.dgvBarang.MultiSelect = False
         Me.dgvBarang.Name = "dgvBarang"
         Me.dgvBarang.ReadOnly = True
@@ -216,12 +224,13 @@ Partial Class FormDataBarang
         Me.pnlInput.Controls.Add(Me.btnTambah)
         Me.pnlInput.Controls.Add(Me.btnUbah)
         Me.pnlInput.Controls.Add(Me.btnHapus)
-        Me.pnlInput.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlInput.Location = New System.Drawing.Point(0, 562)
-        Me.pnlInput.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.pnlInput.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlInput.Location = New System.Drawing.Point(0, 0)
+        Me.pnlInput.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
+        Me.pnlInput.MinimumSize = New System.Drawing.Size(0, 164)
         Me.pnlInput.Name = "pnlInput"
         Me.pnlInput.Padding = New System.Windows.Forms.Padding(16, 12, 16, 12)
-        Me.pnlInput.Size = New System.Drawing.Size(880, 154)
+        Me.pnlInput.Size = New System.Drawing.Size(880, 158)
         Me.pnlInput.TabIndex = 3
         '
         'lblKode
@@ -294,8 +303,7 @@ Partial Class FormDataBarang
         '
         'btnTambah - hijau
         '
-        Me.btnTambah.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTambah.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.btnTambah.BackColor = System.Drawing.Color.FromArgb(46, 166, 46)
         Me.btnTambah.CornerRadius = 8
         Me.btnTambah.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
@@ -310,8 +318,7 @@ Partial Class FormDataBarang
         '
         'btnUbah - oranye
         '
-        Me.btnUbah.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnUbah.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.btnUbah.BackColor = System.Drawing.Color.FromArgb(255, 148, 22)
         Me.btnUbah.CornerRadius = 8
         Me.btnUbah.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
@@ -326,8 +333,7 @@ Partial Class FormDataBarang
         '
         'btnHapus - merah
         '
-        Me.btnHapus.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnHapus.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.btnHapus.BackColor = System.Drawing.Color.FromArgb(223, 58, 53)
         Me.btnHapus.CornerRadius = 8
         Me.btnHapus.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
@@ -348,9 +354,16 @@ Partial Class FormDataBarang
         Me.pnlNavigasi.Controls.Add(Me.btnBerikutnya)
         Me.pnlNavigasi.Controls.Add(Me.btnTerakhir)
         Me.pnlNavigasi.Controls.Add(Me.btnTutup)
-        Me.pnlNavigasi.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlNavigasi.Location = New System.Drawing.Point(0, 716)
+        Me.pnlNavigasi.Controls.Add(Me.btnRefresh)
+        Me.pnlNavigasi.Controls.Add(Me.btnHalKasir)
+        Me.pnlNavigasi.Controls.Add(Me.btnHalData)
+        Me.pnlNavigasi.Controls.Add(Me.btnHalRiwayat)
+        Me.pnlNavigasi.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlNavigasi.Location = New System.Drawing.Point(0, 0)
+        Me.pnlNavigasi.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
+        Me.pnlNavigasi.MinimumSize = New System.Drawing.Size(0, 70)
         Me.pnlNavigasi.Name = "pnlNavigasi"
+        Me.pnlNavigasi.Padding = New System.Windows.Forms.Padding(0, 0, 0, 0)
         Me.pnlNavigasi.Size = New System.Drawing.Size(880, 64)
         Me.pnlNavigasi.TabIndex = 4
         '
@@ -426,6 +439,83 @@ Partial Class FormDataBarang
         Me.btnTutup.Text = "Kembali"
         Me.btnTutup.UseVisualStyleBackColor = False
         '
+        'btnRefresh - muat ulang data dari database
+        '
+        Me.btnRefresh.BackColor = System.Drawing.Color.FromArgb(46, 166, 46)
+        Me.btnRefresh.CornerRadius = 8
+        Me.btnRefresh.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnRefresh.ForeColor = System.Drawing.Color.White
+        Me.btnRefresh.Location = New System.Drawing.Point(492, 14)
+        Me.btnRefresh.Name = "btnRefresh"
+        Me.btnRefresh.Size = New System.Drawing.Size(104, 36)
+        Me.btnRefresh.TabIndex = 5
+        Me.btnRefresh.TabStop = False
+        Me.btnRefresh.Text = "Refresh"
+        Me.btnRefresh.UseVisualStyleBackColor = False
+        '
+        'btnHalKasir - pindah ke halaman Kasir (F1)
+        '
+        Me.btnHalKasir.BackColor = System.Drawing.Color.FromArgb(120, 130, 145)
+        Me.btnHalKasir.CornerRadius = 8
+        Me.btnHalKasir.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnHalKasir.ForeColor = System.Drawing.Color.White
+        Me.btnHalKasir.Location = New System.Drawing.Point(604, 14)
+        Me.btnHalKasir.Name = "btnHalKasir"
+        Me.btnHalKasir.Size = New System.Drawing.Size(100, 36)
+        Me.btnHalKasir.TabIndex = 6
+        Me.btnHalKasir.TabStop = False
+        Me.btnHalKasir.Text = "Kasir (F1)"
+        Me.btnHalKasir.UseVisualStyleBackColor = False
+        '
+        'btnHalData - pindah ke Kelola Barang (F2)
+        '
+        Me.btnHalData.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnHalData.CornerRadius = 8
+        Me.btnHalData.Enabled = False
+        Me.btnHalData.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnHalData.ForeColor = System.Drawing.Color.White
+        Me.btnHalData.Location = New System.Drawing.Point(710, 14)
+        Me.btnHalData.Name = "btnHalData"
+        Me.btnHalData.Size = New System.Drawing.Size(110, 36)
+        Me.btnHalData.TabIndex = 7
+        Me.btnHalData.TabStop = False
+        Me.btnHalData.Text = "Data (F2)"
+        Me.btnHalData.UseVisualStyleBackColor = False
+        '
+        'btnHalRiwayat - pindah ke Riwayat (F3)
+        '
+        Me.btnHalRiwayat.BackColor = System.Drawing.Color.FromArgb(120, 130, 145)
+        Me.btnHalRiwayat.CornerRadius = 8
+        Me.btnHalRiwayat.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnHalRiwayat.ForeColor = System.Drawing.Color.White
+        Me.btnHalRiwayat.Location = New System.Drawing.Point(826, 14)
+        Me.btnHalRiwayat.Name = "btnHalRiwayat"
+        Me.btnHalRiwayat.Size = New System.Drawing.Size(108, 36)
+        Me.btnHalRiwayat.TabIndex = 8
+        Me.btnHalRiwayat.TabStop = False
+        Me.btnHalRiwayat.Text = "Riwayat (F3)"
+        Me.btnHalRiwayat.UseVisualStyleBackColor = False
+        '
+        'tblIsi - wadah grid + panel bawah agar tidak bertumpuk (Dock = Fill di sisa ruang)
+        '
+        Me.tblIsi.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
+        Me.tblIsi.ColumnCount = 1
+        Me.tblIsi.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblIsi.Controls.Add(Me.dgvBarang, 0, 0)
+        Me.tblIsi.Controls.Add(Me.pnlInput, 0, 1)
+        Me.tblIsi.Controls.Add(Me.pnlNavigasi, 0, 2)
+        Me.tblIsi.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblIsi.Location = New System.Drawing.Point(0, 134)
+        Me.tblIsi.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.tblIsi.Name = "tblIsi"
+        Me.tblIsi.Padding = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.tblIsi.RowCount = 3
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 164.0!))
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70.0!))
+        Me.tblIsi.Size = New System.Drawing.Size(880, 652)
+        Me.tblIsi.TabIndex = 5
+        '
         'FormDataBarang
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -433,13 +523,12 @@ Partial Class FormDataBarang
         Me.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.Size = New System.Drawing.Size(880, 786)
-        Me.Controls.Add(Me.dgvBarang)
-        Me.Controls.Add(Me.pnlInput)
-        Me.Controls.Add(Me.pnlNavigasi)
+        Me.Controls.Add(Me.tblIsi)
         Me.Controls.Add(Me.pnlCariTop)
         Me.Controls.Add(Me.pnlHeader)
         Me.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.MinimumSize = New System.Drawing.Size(880, 786)
+        Me.MinimumSize = New System.Drawing.Size(880, 480)
+        Me.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
         Me.Name = "FormDataBarang"
         Me.pnlHeader.ResumeLayout(False)
         Me.pnlHeader.PerformLayout()
@@ -450,6 +539,7 @@ Partial Class FormDataBarang
         Me.pnlInput.ResumeLayout(False)
         Me.pnlInput.PerformLayout()
         Me.pnlNavigasi.ResumeLayout(False)
+        Me.tblIsi.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -485,5 +575,10 @@ Partial Class FormDataBarang
     Friend WithEvents btnBerikutnya As Global.Kasir_Warung.TombolBulat
     Friend WithEvents btnTerakhir As Global.Kasir_Warung.TombolBulat
     Friend WithEvents btnTutup As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnRefresh As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnHalKasir As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnHalData As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnHalRiwayat As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents tblIsi As System.Windows.Forms.TableLayoutPanel
 
 End Class

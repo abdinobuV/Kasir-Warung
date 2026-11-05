@@ -55,6 +55,16 @@ Partial Class FormRiwayat
         Me.pnlFooter = New System.Windows.Forms.Panel()
         Me.lblJudulDetail = New System.Windows.Forms.Label()
         Me.btnTutup = New Global.Kasir_Warung.TombolBulat()
+        Me.pnlNavigasi = New System.Windows.Forms.Panel()
+        Me.btnPertama = New Global.Kasir_Warung.TombolBulat()
+        Me.btnSebelumnya = New Global.Kasir_Warung.TombolBulat()
+        Me.btnBerikutnya = New Global.Kasir_Warung.TombolBulat()
+        Me.btnTerakhir = New Global.Kasir_Warung.TombolBulat()
+        Me.lblPosisi = New System.Windows.Forms.Label()
+        Me.btnHalKasir = New Global.Kasir_Warung.TombolBulat()
+        Me.btnHalData = New Global.Kasir_Warung.TombolBulat()
+        Me.btnHalRiwayat = New Global.Kasir_Warung.TombolBulat()
+        Me.tblIsi = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlHeader.SuspendLayout()
         Me.pnlFilterTop.SuspendLayout()
         Me.pnlFilter.SuspendLayout()
@@ -63,6 +73,7 @@ Partial Class FormRiwayat
         Me.pnlDetail.SuspendLayout()
         CType(Me.dgvDetail, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlFooter.SuspendLayout()
+        Me.pnlNavigasi.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlHeader - biru tua, judul dialog (Dock = Top)
@@ -115,6 +126,7 @@ Partial Class FormRiwayat
         Me.pnlFilterTop.Controls.Add(Me.pnlFilter)
         Me.pnlFilterTop.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlFilterTop.Location = New System.Drawing.Point(0, 64)
+        Me.pnlFilterTop.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
         Me.pnlFilterTop.Name = "pnlFilterTop"
         Me.pnlFilterTop.Size = New System.Drawing.Size(1000, 62)
         Me.pnlFilter.TabIndex = 1
@@ -131,8 +143,7 @@ Partial Class FormRiwayat
         '
         'dtpDari - awal rentang filter
         '
-        Me.dtpDari.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dtpDari.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.dtpDari.Format = System.Windows.Forms.DateTimePickerFormat.Short
         Me.dtpDari.Location = New System.Drawing.Point(74, 15)
         Me.dtpDari.Name = "dtpDari"
@@ -151,8 +162,7 @@ Partial Class FormRiwayat
         '
         'dtpSampai - akhir rentang filter
         '
-        Me.dtpSampai.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dtpSampai.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.dtpSampai.Format = System.Windows.Forms.DateTimePickerFormat.Short
         Me.dtpSampai.Location = New System.Drawing.Point(312, 15)
         Me.dtpSampai.Name = "dtpSampai"
@@ -161,8 +171,7 @@ Partial Class FormRiwayat
         '
         'btnTerapkan - hijau
         '
-        Me.btnTerapkan.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTerapkan.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.btnTerapkan.BackColor = System.Drawing.Color.FromArgb(46, 166, 46)
         Me.btnTerapkan.CornerRadius = 8
         Me.btnTerapkan.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
@@ -177,8 +186,7 @@ Partial Class FormRiwayat
         '
         'lblPendapatan
         '
-        Me.lblPendapatan.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblPendapatan.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.lblPendapatan.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40)
         Me.lblPendapatan.Location = New System.Drawing.Point(616, 15)
         Me.lblPendapatan.Name = "lblPendapatan"
@@ -189,8 +197,7 @@ Partial Class FormRiwayat
         '
         'lblTotalPendapatan - diisi dari SUM(total) recordset
         '
-        Me.lblTotalPendapatan.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblTotalPendapatan.Anchor = System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left
         Me.lblTotalPendapatan.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
         Me.lblTotalPendapatan.ForeColor = System.Drawing.Color.FromArgb(47, 95, 167)
         Me.lblTotalPendapatan.Location = New System.Drawing.Point(772, 15)
@@ -206,8 +213,10 @@ Partial Class FormRiwayat
         Me.pnlMaster.CornerRadius = 12
         Me.pnlMaster.Controls.Add(Me.lblMaster)
         Me.pnlMaster.Controls.Add(Me.dgvTransaksi)
-        Me.pnlMaster.Dock = System.Windows.Forms.DockStyle.Top
-        Me.pnlMaster.Location = New System.Drawing.Point(0, 126)
+        Me.pnlMaster.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMaster.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMaster.Margin = New System.Windows.Forms.Padding(0, 0, 0, 4)
+        Me.pnlMaster.MinimumSize = New System.Drawing.Size(0, 200)
         Me.pnlMaster.Name = "pnlMaster"
         Me.pnlMaster.Padding = New System.Windows.Forms.Padding(12, 40, 12, 12)
         Me.pnlMaster.Size = New System.Drawing.Size(1000, 280)
@@ -299,7 +308,9 @@ Partial Class FormRiwayat
         Me.pnlDetail.Controls.Add(Me.lblDetail)
         Me.pnlDetail.Controls.Add(Me.dgvDetail)
         Me.pnlDetail.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlDetail.Location = New System.Drawing.Point(0, 406)
+        Me.pnlDetail.Location = New System.Drawing.Point(0, 0)
+        Me.pnlDetail.Margin = New System.Windows.Forms.Padding(0, 0, 0, 4)
+        Me.pnlDetail.MinimumSize = New System.Drawing.Size(0, 80)
         Me.pnlDetail.Name = "pnlDetail"
         Me.pnlDetail.Padding = New System.Windows.Forms.Padding(12, 40, 12, 12)
         Me.pnlDetail.Size = New System.Drawing.Size(1000, 240)
@@ -399,8 +410,10 @@ Partial Class FormRiwayat
         Me.pnlFooter.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
         Me.pnlFooter.Controls.Add(Me.lblJudulDetail)
         Me.pnlFooter.Controls.Add(Me.btnTutup)
-        Me.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.pnlFooter.Location = New System.Drawing.Point(0, 640)
+        Me.pnlFooter.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFooter.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFooter.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
+        Me.pnlFooter.MinimumSize = New System.Drawing.Size(0, 66)
         Me.pnlFooter.Name = "pnlFooter"
         Me.pnlFooter.Size = New System.Drawing.Size(1000, 64)
         Me.pnlFooter.TabIndex = 4
@@ -431,19 +444,169 @@ Partial Class FormRiwayat
         Me.btnTutup.Text = "Kembali"
         Me.btnTutup.UseVisualStyleBackColor = False
         '
+        'pnlNavigasi - tombol navigasi record + navigasi halaman (Dock = Bottom, di atas footer)
+        '
+        Me.pnlNavigasi.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
+        Me.pnlNavigasi.Controls.Add(Me.btnPertama)
+        Me.pnlNavigasi.Controls.Add(Me.btnSebelumnya)
+        Me.pnlNavigasi.Controls.Add(Me.btnBerikutnya)
+        Me.pnlNavigasi.Controls.Add(Me.btnTerakhir)
+        Me.pnlNavigasi.Controls.Add(Me.lblPosisi)
+        Me.pnlNavigasi.Controls.Add(Me.btnHalKasir)
+        Me.pnlNavigasi.Controls.Add(Me.btnHalData)
+        Me.pnlNavigasi.Controls.Add(Me.btnHalRiwayat)
+        Me.pnlNavigasi.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlNavigasi.Location = New System.Drawing.Point(0, 0)
+        Me.pnlNavigasi.Margin = New System.Windows.Forms.Padding(0, 4, 0, 0)
+        Me.pnlNavigasi.MinimumSize = New System.Drawing.Size(0, 70)
+        Me.pnlNavigasi.Name = "pnlNavigasi"
+        Me.pnlNavigasi.Size = New System.Drawing.Size(1000, 64)
+        Me.pnlNavigasi.TabIndex = 5
+        '
+        'btnPertama - MoveFirst
+        '
+        Me.btnPertama.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnPertama.CornerRadius = 8
+        Me.btnPertama.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnPertama.ForeColor = System.Drawing.Color.White
+        Me.btnPertama.Location = New System.Drawing.Point(16, 14)
+        Me.btnPertama.Name = "btnPertama"
+        Me.btnPertama.Size = New System.Drawing.Size(104, 36)
+        Me.btnPertama.TabIndex = 0
+        Me.btnPertama.TabStop = False
+        Me.btnPertama.Text = "|< Pertama"
+        Me.btnPertama.UseVisualStyleBackColor = False
+        '
+        'btnSebelumnya - MovePrevious
+        '
+        Me.btnSebelumnya.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnSebelumnya.CornerRadius = 8
+        Me.btnSebelumnya.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnSebelumnya.ForeColor = System.Drawing.Color.White
+        Me.btnSebelumnya.Location = New System.Drawing.Point(128, 14)
+        Me.btnSebelumnya.Name = "btnSebelumnya"
+        Me.btnSebelumnya.Size = New System.Drawing.Size(120, 36)
+        Me.btnSebelumnya.TabIndex = 1
+        Me.btnSebelumnya.TabStop = False
+        Me.btnSebelumnya.Text = "< Sebelumnya"
+        Me.btnSebelumnya.UseVisualStyleBackColor = False
+        '
+        'btnBerikutnya - MoveNext
+        '
+        Me.btnBerikutnya.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnBerikutnya.CornerRadius = 8
+        Me.btnBerikutnya.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnBerikutnya.ForeColor = System.Drawing.Color.White
+        Me.btnBerikutnya.Location = New System.Drawing.Point(256, 14)
+        Me.btnBerikutnya.Name = "btnBerikutnya"
+        Me.btnBerikutnya.Size = New System.Drawing.Size(112, 36)
+        Me.btnBerikutnya.TabIndex = 2
+        Me.btnBerikutnya.TabStop = False
+        Me.btnBerikutnya.Text = "Berikutnya >"
+        Me.btnBerikutnya.UseVisualStyleBackColor = False
+        '
+        'btnTerakhir - MoveLast
+        '
+        Me.btnTerakhir.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnTerakhir.CornerRadius = 8
+        Me.btnTerakhir.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnTerakhir.ForeColor = System.Drawing.Color.White
+        Me.btnTerakhir.Location = New System.Drawing.Point(376, 14)
+        Me.btnTerakhir.Name = "btnTerakhir"
+        Me.btnTerakhir.Size = New System.Drawing.Size(104, 36)
+        Me.btnTerakhir.TabIndex = 3
+        Me.btnTerakhir.TabStop = False
+        Me.btnTerakhir.Text = "Terakhir >|"
+        Me.btnTerakhir.UseVisualStyleBackColor = False
+        '
+        'lblPosisi - posisi record saat ini
+        '
+        Me.lblPosisi.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.lblPosisi.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40)
+        Me.lblPosisi.Location = New System.Drawing.Point(488, 14)
+        Me.lblPosisi.Name = "lblPosisi"
+        Me.lblPosisi.Size = New System.Drawing.Size(140, 36)
+        Me.lblPosisi.TabIndex = 4
+        Me.lblPosisi.Text = "Record 0 dari 0"
+        Me.lblPosisi.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnHalKasir - pindah ke halaman Kasir (F1)
+        '
+        Me.btnHalKasir.BackColor = System.Drawing.Color.FromArgb(120, 130, 145)
+        Me.btnHalKasir.CornerRadius = 8
+        Me.btnHalKasir.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnHalKasir.ForeColor = System.Drawing.Color.White
+        Me.btnHalKasir.Location = New System.Drawing.Point(630, 14)
+        Me.btnHalKasir.Name = "btnHalKasir"
+        Me.btnHalKasir.Size = New System.Drawing.Size(108, 36)
+        Me.btnHalKasir.TabIndex = 5
+        Me.btnHalKasir.TabStop = False
+        Me.btnHalKasir.Text = "Kasir (F1)"
+        Me.btnHalKasir.UseVisualStyleBackColor = False
+        '
+        'btnHalData - pindah ke Kelola Barang (F2)
+        '
+        Me.btnHalData.BackColor = System.Drawing.Color.FromArgb(120, 130, 145)
+        Me.btnHalData.CornerRadius = 8
+        Me.btnHalData.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnHalData.ForeColor = System.Drawing.Color.White
+        Me.btnHalData.Location = New System.Drawing.Point(744, 14)
+        Me.btnHalData.Name = "btnHalData"
+        Me.btnHalData.Size = New System.Drawing.Size(122, 36)
+        Me.btnHalData.TabIndex = 6
+        Me.btnHalData.TabStop = False
+        Me.btnHalData.Text = "Data (F2)"
+        Me.btnHalData.UseVisualStyleBackColor = False
+        '
+        'btnHalRiwayat - pindah ke Riwayat (F3)
+        '
+        Me.btnHalRiwayat.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnHalRiwayat.CornerRadius = 8
+        Me.btnHalRiwayat.Enabled = False
+        Me.btnHalRiwayat.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnHalRiwayat.ForeColor = System.Drawing.Color.White
+        Me.btnHalRiwayat.Location = New System.Drawing.Point(872, 14)
+        Me.btnHalRiwayat.Name = "btnHalRiwayat"
+        Me.btnHalRiwayat.Size = New System.Drawing.Size(112, 36)
+        Me.btnHalRiwayat.TabIndex = 7
+        Me.btnHalRiwayat.TabStop = False
+        Me.btnHalRiwayat.Text = "Riwayat (F3)"
+        Me.btnHalRiwayat.UseVisualStyleBackColor = False
+        '
+        'tblIsi - wadah master-detail + panel bawah agar tidak bertumpuk
+        '
+        Me.tblIsi.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
+        Me.tblIsi.ColumnCount = 1
+        Me.tblIsi.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblIsi.Controls.Add(Me.pnlMaster, 0, 0)
+        Me.tblIsi.Controls.Add(Me.pnlDetail, 0, 1)
+        Me.tblIsi.Controls.Add(Me.pnlNavigasi, 0, 2)
+        Me.tblIsi.Controls.Add(Me.pnlFooter, 0, 3)
+        Me.tblIsi.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblIsi.Location = New System.Drawing.Point(0, 126)
+        Me.tblIsi.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.tblIsi.Name = "tblIsi"
+        Me.tblIsi.Padding = New System.Windows.Forms.Padding(0, 0, 0, 0)
+        Me.tblIsi.RowCount = 4
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200.0!))
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70.0!))
+        Me.tblIsi.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 66.0!))
+        Me.tblIsi.Size = New System.Drawing.Size(1000, 584)
+        Me.tblIsi.TabIndex = 6
+        '
         'FormRiwayat
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
         Me.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
         Me.Size = New System.Drawing.Size(1000, 710)
-        Me.Controls.Add(Me.pnlDetail)
-        Me.Controls.Add(Me.pnlFooter)
-        Me.Controls.Add(Me.pnlMaster)
+        Me.Controls.Add(Me.tblIsi)
         Me.Controls.Add(Me.pnlFilterTop)
         Me.Controls.Add(Me.pnlHeader)
         Me.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.MinimumSize = New System.Drawing.Size(1000, 710)
+        Me.MinimumSize = New System.Drawing.Size(1000, 560)
+        Me.Margin = New System.Windows.Forms.Padding(0, 0, 0, 0)
         Me.Name = "FormRiwayat"
         Me.pnlHeader.ResumeLayout(False)
         Me.pnlHeader.PerformLayout()
@@ -458,6 +621,8 @@ Partial Class FormRiwayat
         CType(Me.dgvDetail, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlFooter.ResumeLayout(False)
         Me.pnlFooter.PerformLayout()
+        Me.pnlNavigasi.ResumeLayout(False)
+        Me.tblIsi.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -494,5 +659,15 @@ Partial Class FormRiwayat
     Friend WithEvents pnlFooter As System.Windows.Forms.Panel
     Friend WithEvents lblJudulDetail As System.Windows.Forms.Label
     Friend WithEvents btnTutup As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents pnlNavigasi As System.Windows.Forms.Panel
+    Friend WithEvents btnPertama As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnSebelumnya As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnBerikutnya As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnTerakhir As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents lblPosisi As System.Windows.Forms.Label
+    Friend WithEvents btnHalKasir As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnHalData As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents btnHalRiwayat As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents tblIsi As System.Windows.Forms.TableLayoutPanel
 
 End Class

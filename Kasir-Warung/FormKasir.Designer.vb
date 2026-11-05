@@ -837,6 +837,7 @@ Partial Class FormKasir
         Me.MinimumSize = New System.Drawing.Size(1000, 680)
         Me.Name = "FormKasir"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.Text = "Kasir Minimarket"
         Me.pnlHeader.ResumeLayout(False)
         Me.pnlJam.ResumeLayout(False)

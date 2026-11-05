@@ -6,6 +6,7 @@
     <RootNamespace>Kasir_Warung</RootNamespace>
     <StartupObject>Sub Main</StartupObject>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationHighDpiMode>DpiUnawareGdiScaled</ApplicationHighDpiMode>
     <MyType>WindowsForms</MyType>
     <!-- Option Strict/On supaya konversi tipe harus eksplisit, aman untuk pemula -->
     <OptionStrict>On</OptionStrict>

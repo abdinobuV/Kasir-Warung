@@ -26,9 +26,10 @@ Namespace My
     Partial Friend Class MyApplication
 
         ' Diatur saat aplikasi start, sebelum form dibuat.
-        ' HighDpiMode PerMonitorV2 mencegah tampilan buram/pecah pada layar scaling.
+        ' DpiUnawareGdiScaled: render 96 DPI lalu diskalakan GDI+ agar layout 1100x730 tetap muat.
         Private Sub MyApplication_ApplyApplicationDefaults(sender As Object, e As ApplyApplicationDefaultsEventArgs) Handles Me.ApplyApplicationDefaults
-            e.HighDpiMode = HighDpiMode.PerMonitorV2
+            ' Layar dengan skala >100% memotong layout 1100x730; GDI+ diskalakan agar tetap muat.
+            e.HighDpiMode = HighDpiMode.DpiUnawareGdiScaled
             ' Font default aplikasi: Segoe UI 10 pt sesuai desain FormKasir
             e.Font = New Drawing.Font("Segoe UI", 10.0F, Drawing.FontStyle.Regular, Drawing.GraphicsUnit.Point)
         End Sub
