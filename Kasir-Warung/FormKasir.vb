@@ -77,6 +77,7 @@ Public Class FormKasir
         SiapkanGrid()          ' hubungkan kolom grid dengan kolom recordset
         BuatKeranjang()        ' buat recordset keranjang (masih kosong)
         SiapkanCetak()         ' siapkan PrintDocument untuk Tahap 5
+        SiapkanNavigasi()      ' siapkan halaman Kelola Barang & Riwayat (Tahap 6)
         txtTotal.Text = FormatRupiah(0)
         txtKembalian.Text = FormatRupiah(0)
 
@@ -1038,8 +1039,77 @@ Public Class FormKasir
     End Function
 
     ' ============================================================
-    ' ============  Catatan tahap berikutnya  ====================
+    ' ============  Navigasi Halaman (Tahap 6)  =====================
     ' ============================================================
-    ' F2 / F3   -> Tahap 6 (FormDataBarang, FormRiwayat)
+    ' F2 / F3 bukan membuka jendela baru, tapi berpindah halaman
+    ' di dalam FormKasir yang sama (panelIsi).
+
+    ''' <summary>
+    ''' Cache halaman Kelola Barang dan Riwayat supaya data tetap hidup
+    ''' saat berpindah-pindah halaman.
+    ''' </summary>
+    Private _halamanBarang As FormDataBarang
+    Private _halamanRiwayat As FormRiwayat
+
+    ''' <summary>Menghubungkan kontrol halaman kembali ke FormKasir.</summary>
+    Private Sub SiapkanNavigasi()
+        _halamanBarang = New FormDataBarang()
+        _halamanBarang.Dock = DockStyle.Fill
+        _halamanBarang.Visible = False
+        _halamanRiwayat = New FormRiwayat()
+        _halamanRiwayat.Dock = DockStyle.Fill
+        _halamanRiwayat.Visible = False
+
+        pnlIsi.Controls.Add(_halamanBarang)
+        pnlIsi.Controls.Add(_halamanRiwayat)
+
+        AddHandler _halamanBarang.btnTutup.Click,
+                   Sub(s As Object, ev As EventArgs) TampilkanHalamanKasir()
+        AddHandler _halamanRiwayat.btnTutup.Click,
+                   Sub(s As Object, ev As EventArgs) TampilkanHalamanKasir()
+    End Sub
+
+    ''' <summary>Menampilkan halaman Kasir (tata letak Kasir Minimarket).</summary>
+    Public Sub TampilkanHalamanKasir()
+        tblUtama.Visible = True
+
+        If _halamanBarang IsNot Nothing Then _halamanBarang.Visible = False
+        If _halamanRiwayat IsNot Nothing Then _halamanRiwayat.Visible = False
+    End Sub
+
+    ''' <summary>Menampilkan halaman Kelola Barang.</summary>
+    Private Sub TampilkanHalamanBarang()
+        tblUtama.Visible = False
+
+        If _halamanBarang Is Nothing Then SiapkanNavigasi()
+
+        If _halamanRiwayat IsNot Nothing Then _halamanRiwayat.Visible = False
+        _halamanBarang.Visible = True
+        _halamanBarang.BringToFront()
+    End Sub
+
+    ''' <summary>Menampilkan halaman Riwayat Transaksi.</summary>
+    Private Sub TampilkanHalamanRiwayat()
+        tblUtama.Visible = False
+
+        If _halamanRiwayat Is Nothing Then SiapkanNavigasi()
+
+        If _halamanBarang IsNot Nothing Then _halamanBarang.Visible = False
+        _halamanRiwayat.Visible = True
+        _halamanRiwayat.BringToFront()
+    End Sub
+
+    Private Sub FormKasir_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+        If e.KeyCode = Keys.F2 Then
+            e.SuppressKeyPress = True   ' cegah bunyi "ding"
+            TampilkanHalamanBarang()
+        ElseIf e.KeyCode = Keys.F3 Then
+            e.SuppressKeyPress = True
+            TampilkanHalamanRiwayat()
+        ElseIf e.KeyCode = Keys.F1 Then
+            e.SuppressKeyPress = True
+            TampilkanHalamanKasir()
+        End If
+    End Sub
 
 End Class

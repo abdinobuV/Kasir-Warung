@@ -1,0 +1,498 @@
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class FormRiwayat
+    Inherits System.Windows.Forms.UserControl
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Me.pnlHeader = New System.Windows.Forms.Panel()
+        Me.lblIkon = New System.Windows.Forms.Label()
+        Me.lblJudul = New System.Windows.Forms.Label()
+        Me.pnlFilterTop = New System.Windows.Forms.Panel()
+        Me.pnlFilter = New System.Windows.Forms.Panel()
+        Me.lblDari = New System.Windows.Forms.Label()
+        Me.dtpDari = New System.Windows.Forms.DateTimePicker()
+        Me.lblSampai = New System.Windows.Forms.Label()
+        Me.dtpSampai = New System.Windows.Forms.DateTimePicker()
+        Me.btnTerapkan = New Global.Kasir_Warung.TombolBulat()
+        Me.lblPendapatan = New System.Windows.Forms.Label()
+        Me.lblTotalPendapatan = New System.Windows.Forms.Label()
+        Me.pnlMaster = New Global.Kasir_Warung.PanelBulat()
+        Me.lblMaster = New System.Windows.Forms.Label()
+        Me.dgvTransaksi = New System.Windows.Forms.DataGridView()
+        Me.colNoTransaksi = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTanggal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTotal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colBayar = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colKembali = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pnlDetail = New Global.Kasir_Warung.PanelBulat()
+        Me.lblDetail = New System.Windows.Forms.Label()
+        Me.dgvDetail = New System.Windows.Forms.DataGridView()
+        Me.colDNo = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDKode = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDNama = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDJumlah = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDHarga = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colDSubtotal = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pnlFooter = New System.Windows.Forms.Panel()
+        Me.lblJudulDetail = New System.Windows.Forms.Label()
+        Me.btnTutup = New Global.Kasir_Warung.TombolBulat()
+        Me.pnlHeader.SuspendLayout()
+        Me.pnlFilterTop.SuspendLayout()
+        Me.pnlFilter.SuspendLayout()
+        Me.pnlMaster.SuspendLayout()
+        CType(Me.dgvTransaksi, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlDetail.SuspendLayout()
+        CType(Me.dgvDetail, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlFooter.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'pnlHeader - biru tua, judul dialog (Dock = Top)
+        '
+        Me.pnlHeader.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.pnlHeader.Controls.Add(Me.lblIkon)
+        Me.pnlHeader.Controls.Add(Me.lblJudul)
+        Me.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlHeader.Location = New System.Drawing.Point(0, 0)
+        Me.pnlHeader.Name = "pnlHeader"
+        Me.pnlHeader.Size = New System.Drawing.Size(1000, 64)
+        Me.pnlHeader.TabIndex = 0
+        '
+        'lblIkon - ikon jam/riwayat (glyph E823), font diganti saat form dibuka
+        '
+        Me.lblIkon.Font = New System.Drawing.Font("Segoe Fluent Icons", 18.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.lblIkon.ForeColor = System.Drawing.Color.White
+        Me.lblIkon.Location = New System.Drawing.Point(16, 13)
+        Me.lblIkon.Name = "lblIkon"
+        Me.lblIkon.Size = New System.Drawing.Size(44, 36)
+        Me.lblIkon.TabIndex = 0
+        Me.lblIkon.Text = Global.Microsoft.VisualBasic.ChrW(&HE823)
+        Me.lblIkon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblJudul
+        '
+        Me.lblJudul.AutoSize = True
+        Me.lblJudul.Font = New System.Drawing.Font("Segoe UI", 16.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.lblJudul.ForeColor = System.Drawing.Color.White
+        Me.lblJudul.Location = New System.Drawing.Point(68, 14)
+        Me.lblJudul.Name = "lblJudul"
+        Me.lblJudul.Size = New System.Drawing.Size(197, 30)
+        Me.lblJudul.TabIndex = 1
+        Me.lblJudul.Text = "Riwayat Transaksi (F3)"
+        '
+        'pnlFilter - filter rentang tanggal + total pendapatan (Dock = Top)
+        '
+        Me.pnlFilter.BackColor = System.Drawing.Color.FromArgb(227, 236, 249)
+        Me.pnlFilter.Controls.Add(Me.lblDari)
+        Me.pnlFilter.Controls.Add(Me.dtpDari)
+        Me.pnlFilter.Controls.Add(Me.lblSampai)
+        Me.pnlFilter.Controls.Add(Me.dtpSampai)
+        Me.pnlFilter.Controls.Add(Me.btnTerapkan)
+        Me.pnlFilter.Controls.Add(Me.lblPendapatan)
+        Me.pnlFilter.Controls.Add(Me.lblTotalPendapatan)
+        Me.pnlFilter.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlFilter.Location = New System.Drawing.Point(0, 0)
+        Me.pnlFilter.Name = "pnlFilter"
+        Me.pnlFilter.Size = New System.Drawing.Size(1000, 62)
+        Me.pnlFilterTop.Controls.Add(Me.pnlFilter)
+        Me.pnlFilterTop.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlFilterTop.Location = New System.Drawing.Point(0, 64)
+        Me.pnlFilterTop.Name = "pnlFilterTop"
+        Me.pnlFilterTop.Size = New System.Drawing.Size(1000, 62)
+        Me.pnlFilter.TabIndex = 1
+        '
+        'lblDari
+        '
+        Me.lblDari.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40)
+        Me.lblDari.Location = New System.Drawing.Point(16, 15)
+        Me.lblDari.Name = "lblDari"
+        Me.lblDari.Size = New System.Drawing.Size(52, 32)
+        Me.lblDari.TabIndex = 0
+        Me.lblDari.Text = "Dari :"
+        Me.lblDari.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'dtpDari - awal rentang filter
+        '
+        Me.dtpDari.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dtpDari.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpDari.Location = New System.Drawing.Point(74, 15)
+        Me.dtpDari.Name = "dtpDari"
+        Me.dtpDari.Size = New System.Drawing.Size(150, 30)
+        Me.dtpDari.TabIndex = 1
+        '
+        'lblSampai
+        '
+        Me.lblSampai.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40)
+        Me.lblSampai.Location = New System.Drawing.Point(232, 15)
+        Me.lblSampai.Name = "lblSampai"
+        Me.lblSampai.Size = New System.Drawing.Size(74, 32)
+        Me.lblSampai.TabIndex = 2
+        Me.lblSampai.Text = "Sampai :"
+        Me.lblSampai.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'dtpSampai - akhir rentang filter
+        '
+        Me.dtpSampai.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.dtpSampai.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpSampai.Location = New System.Drawing.Point(312, 15)
+        Me.dtpSampai.Name = "dtpSampai"
+        Me.dtpSampai.Size = New System.Drawing.Size(150, 30)
+        Me.dtpSampai.TabIndex = 3
+        '
+        'btnTerapkan - hijau
+        '
+        Me.btnTerapkan.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTerapkan.BackColor = System.Drawing.Color.FromArgb(46, 166, 46)
+        Me.btnTerapkan.CornerRadius = 8
+        Me.btnTerapkan.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnTerapkan.ForeColor = System.Drawing.Color.White
+        Me.btnTerapkan.Location = New System.Drawing.Point(470, 15)
+        Me.btnTerapkan.Name = "btnTerapkan"
+        Me.btnTerapkan.Size = New System.Drawing.Size(130, 32)
+        Me.btnTerapkan.TabIndex = 4
+        Me.btnTerapkan.TabStop = False
+        Me.btnTerapkan.Text = "Tampilkan"
+        Me.btnTerapkan.UseVisualStyleBackColor = False
+        '
+        'lblPendapatan
+        '
+        Me.lblPendapatan.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblPendapatan.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40)
+        Me.lblPendapatan.Location = New System.Drawing.Point(616, 15)
+        Me.lblPendapatan.Name = "lblPendapatan"
+        Me.lblPendapatan.Size = New System.Drawing.Size(150, 32)
+        Me.lblPendapatan.TabIndex = 5
+        Me.lblPendapatan.Text = "Total Pendapatan :"
+        Me.lblPendapatan.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblTotalPendapatan - diisi dari SUM(total) recordset
+        '
+        Me.lblTotalPendapatan.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblTotalPendapatan.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.lblTotalPendapatan.ForeColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.lblTotalPendapatan.Location = New System.Drawing.Point(772, 15)
+        Me.lblTotalPendapatan.Name = "lblTotalPendapatan"
+        Me.lblTotalPendapatan.Size = New System.Drawing.Size(212, 32)
+        Me.lblTotalPendapatan.TabIndex = 6
+        Me.lblTotalPendapatan.Text = "Rp0"
+        Me.lblTotalPendapatan.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'pnlMaster - panel master transaksi
+        '
+        Me.pnlMaster.BackColor = System.Drawing.Color.FromArgb(227, 236, 249)
+        Me.pnlMaster.CornerRadius = 12
+        Me.pnlMaster.Controls.Add(Me.lblMaster)
+        Me.pnlMaster.Controls.Add(Me.dgvTransaksi)
+        Me.pnlMaster.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlMaster.Location = New System.Drawing.Point(0, 126)
+        Me.pnlMaster.Name = "pnlMaster"
+        Me.pnlMaster.Padding = New System.Windows.Forms.Padding(12, 40, 12, 12)
+        Me.pnlMaster.Size = New System.Drawing.Size(1000, 280)
+        Me.pnlMaster.TabIndex = 2
+        '
+        'lblMaster - judul tab biru tua
+        '
+        Me.lblMaster.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.lblMaster.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.lblMaster.ForeColor = System.Drawing.Color.White
+        Me.lblMaster.Location = New System.Drawing.Point(12, 4)
+        Me.lblMaster.Name = "lblMaster"
+        Me.lblMaster.Padding = New System.Windows.Forms.Padding(12, 0, 0, 0)
+        Me.lblMaster.Size = New System.Drawing.Size(330, 30)
+        Me.lblMaster.TabIndex = 0
+        Me.lblMaster.Text = "Daftar Transaksi"
+        Me.lblMaster.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'dgvTransaksi - master (kepala transaksi)
+        '
+        Me.dgvTransaksi.AllowUserToAddRows = False
+        Me.dgvTransaksi.AllowUserToDeleteRows = False
+        Me.dgvTransaksi.AllowUserToResizeColumns = True
+        Me.dgvTransaksi.AllowUserToResizeRows = False
+        Me.dgvTransaksi.BackgroundColor = System.Drawing.Color.White
+        Me.dgvTransaksi.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.dgvTransaksi.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Single
+        Me.dgvTransaksi.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.dgvTransaksi.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colNoTransaksi, Me.colTanggal, Me.colTotal, Me.colBayar, Me.colKembali})
+        Me.dgvTransaksi.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
+        Me.dgvTransaksi.ColumnHeadersHeight = 34
+        Me.dgvTransaksi.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvTransaksi.EnableHeadersVisualStyles = False
+        Me.dgvTransaksi.GridColor = System.Drawing.Color.FromArgb(200, 210, 225)
+        Me.dgvTransaksi.Location = New System.Drawing.Point(12, 40)
+        Me.dgvTransaksi.MultiSelect = False
+        Me.dgvTransaksi.Name = "dgvTransaksi"
+        Me.dgvTransaksi.ReadOnly = True
+        Me.dgvTransaksi.RowHeadersVisible = False
+        Me.dgvTransaksi.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvTransaksi.Size = New System.Drawing.Size(976, 234)
+        Me.dgvTransaksi.TabIndex = 1
+        Me.dgvTransaksi.TabStop = False
+        '
+        'colNoTransaksi
+        '
+        Me.colNoTransaksi.DataPropertyName = "no_transaksi"
+        Me.colNoTransaksi.HeaderText = "No Transaksi"
+        Me.colNoTransaksi.Name = "colNoTransaksi"
+        Me.colNoTransaksi.ReadOnly = True
+        Me.colNoTransaksi.Width = 220
+        '
+        'colTanggal - format tanggal id-ID
+        '
+        Me.colTanggal.DataPropertyName = "tanggal"
+        Me.colTanggal.HeaderText = "Tanggal"
+        Me.colTanggal.Name = "colTanggal"
+        Me.colTanggal.ReadOnly = True
+        Me.colTanggal.Width = 180
+        '
+        'colTotal - rata kanan, format Rp
+        '
+        Me.colTotal.DataPropertyName = "total"
+        Me.colTotal.HeaderText = "Total"
+        Me.colTotal.Name = "colTotal"
+        Me.colTotal.ReadOnly = True
+        Me.colTotal.Width = 140
+        '
+        'colBayar - rata kanan, format Rp
+        '
+        Me.colBayar.DataPropertyName = "bayar"
+        Me.colBayar.HeaderText = "Bayar"
+        Me.colBayar.Name = "colBayar"
+        Me.colBayar.ReadOnly = True
+        Me.colBayar.Width = 140
+        '
+        'colKembali - rata kanan, format Rp, melebar
+        '
+        Me.colKembali.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colKembali.DataPropertyName = "kembali"
+        Me.colKembali.HeaderText = "Kembali"
+        Me.colKembali.Name = "colKembali"
+        Me.colKembali.ReadOnly = True
+        '
+        'pnlDetail - panel detail items (Dock = Fill)
+        '
+        Me.pnlDetail.BackColor = System.Drawing.Color.FromArgb(227, 236, 249)
+        Me.pnlDetail.CornerRadius = 12
+        Me.pnlDetail.Controls.Add(Me.lblDetail)
+        Me.pnlDetail.Controls.Add(Me.dgvDetail)
+        Me.pnlDetail.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlDetail.Location = New System.Drawing.Point(0, 406)
+        Me.pnlDetail.Name = "pnlDetail"
+        Me.pnlDetail.Padding = New System.Windows.Forms.Padding(12, 40, 12, 12)
+        Me.pnlDetail.Size = New System.Drawing.Size(1000, 240)
+        Me.pnlDetail.TabIndex = 3
+        '
+        'lblDetail - judul tab biru tua
+        '
+        Me.lblDetail.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.lblDetail.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.lblDetail.ForeColor = System.Drawing.Color.White
+        Me.lblDetail.Location = New System.Drawing.Point(12, 4)
+        Me.lblDetail.Name = "lblDetail"
+        Me.lblDetail.Padding = New System.Windows.Forms.Padding(12, 0, 0, 0)
+        Me.lblDetail.Size = New System.Drawing.Size(330, 30)
+        Me.lblDetail.TabIndex = 0
+        Me.lblDetail.Text = "Detail Item"
+        Me.lblDetail.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'dgvDetail - detail (item transaksi terpilih)
+        '
+        Me.dgvDetail.AllowUserToAddRows = False
+        Me.dgvDetail.AllowUserToDeleteRows = False
+        Me.dgvDetail.AllowUserToResizeColumns = True
+        Me.dgvDetail.AllowUserToResizeRows = False
+        Me.dgvDetail.BackgroundColor = System.Drawing.Color.White
+        Me.dgvDetail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.dgvDetail.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Single
+        Me.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.dgvDetail.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colDNo, Me.colDKode, Me.colDNama, Me.colDJumlah, Me.colDHarga, Me.colDSubtotal})
+        Me.dgvDetail.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells
+        Me.dgvDetail.ColumnHeadersHeight = 34
+        Me.dgvDetail.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvDetail.EnableHeadersVisualStyles = False
+        Me.dgvDetail.GridColor = System.Drawing.Color.FromArgb(200, 210, 225)
+        Me.dgvDetail.Location = New System.Drawing.Point(12, 40)
+        Me.dgvDetail.MultiSelect = False
+        Me.dgvDetail.Name = "dgvDetail"
+        Me.dgvDetail.ReadOnly = True
+        Me.dgvDetail.RowHeadersVisible = False
+        Me.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvDetail.Size = New System.Drawing.Size(976, 194)
+        Me.dgvDetail.TabIndex = 1
+        Me.dgvDetail.TabStop = False
+        '
+        'colDNo - nomor urut diisi sendiri
+        '
+        Me.colDNo.DefaultCellStyle = New System.Windows.Forms.DataGridViewCellStyle() With {.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter}
+        Me.colDNo.HeaderText = "No"
+        Me.colDNo.Name = "colDNo"
+        Me.colDNo.ReadOnly = True
+        Me.colDNo.Width = 60
+        '
+        'colDKode
+        '
+        Me.colDKode.DataPropertyName = "kode_barang"
+        Me.colDKode.HeaderText = "Kode Barang"
+        Me.colDKode.Name = "colDKode"
+        Me.colDKode.ReadOnly = True
+        Me.colDKode.Width = 130
+        '
+        'colDNama - melebar
+        '
+        Me.colDNama.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colDNama.DataPropertyName = "nama_barang"
+        Me.colDNama.HeaderText = "Nama Barang"
+        Me.colDNama.MinimumWidth = 200
+        Me.colDNama.Name = "colDNama"
+        Me.colDNama.ReadOnly = True
+        '
+        'colDJumlah
+        '
+        Me.colDJumlah.DefaultCellStyle = New System.Windows.Forms.DataGridViewCellStyle() With {.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter}
+        Me.colDJumlah.DataPropertyName = "jumlah"
+        Me.colDJumlah.HeaderText = "Jumlah"
+        Me.colDJumlah.Name = "colDJumlah"
+        Me.colDJumlah.ReadOnly = True
+        Me.colDJumlah.Width = 90
+        '
+        'colDHarga - rata kanan, format Rp
+        '
+        Me.colDHarga.DataPropertyName = "harga_satuan"
+        Me.colDHarga.HeaderText = "Harga"
+        Me.colDHarga.Name = "colDHarga"
+        Me.colDHarga.ReadOnly = True
+        Me.colDHarga.Width = 120
+        '
+        'colDSubtotal - rata kanan, format Rp
+        '
+        Me.colDSubtotal.DataPropertyName = "subtotal"
+        Me.colDSubtotal.HeaderText = "Subtotal"
+        Me.colDSubtotal.Name = "colDSubtotal"
+        Me.colDSubtotal.ReadOnly = True
+        Me.colDSubtotal.Width = 130
+        '
+        'pnlFooter - baris bawah: judul detail + tutup (Dock = Bottom)
+        '
+        Me.pnlFooter.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
+        Me.pnlFooter.Controls.Add(Me.lblJudulDetail)
+        Me.pnlFooter.Controls.Add(Me.btnTutup)
+        Me.pnlFooter.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlFooter.Location = New System.Drawing.Point(0, 640)
+        Me.pnlFooter.Name = "pnlFooter"
+        Me.pnlFooter.Size = New System.Drawing.Size(1000, 64)
+        Me.pnlFooter.TabIndex = 4
+        '
+        'lblJudulDetail - info transaksi terpilih
+        '
+        Me.lblJudulDetail.ForeColor = System.Drawing.Color.FromArgb(40, 40, 40)
+        Me.lblJudulDetail.Location = New System.Drawing.Point(16, 20)
+        Me.lblJudulDetail.Name = "lblJudulDetail"
+        Me.lblJudulDetail.Size = New System.Drawing.Size(700, 32)
+        Me.lblJudulDetail.TabIndex = 0
+        Me.lblJudulDetail.Text = "Pilih transaksi untuk melihat detail"
+        Me.lblJudulDetail.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'btnTutup - menutup form riwayat
+        '
+        Me.btnTutup.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnTutup.BackColor = System.Drawing.Color.FromArgb(47, 95, 167)
+        Me.btnTutup.CornerRadius = 8
+        Me.btnTutup.DialogResult = System.Windows.Forms.DialogResult.None
+        Me.btnTutup.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.btnTutup.ForeColor = System.Drawing.Color.White
+        Me.btnTutup.Location = New System.Drawing.Point(890, 14)
+        Me.btnTutup.Name = "btnTutup"
+        Me.btnTutup.Size = New System.Drawing.Size(94, 36)
+        Me.btnTutup.TabIndex = 1
+        Me.btnTutup.TabStop = False
+        Me.btnTutup.Text = "Kembali"
+        Me.btnTutup.UseVisualStyleBackColor = False
+        '
+        'FormRiwayat
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
+        Me.BackColor = System.Drawing.Color.FromArgb(220, 232, 248)
+        Me.Size = New System.Drawing.Size(1000, 710)
+        Me.Controls.Add(Me.pnlDetail)
+        Me.Controls.Add(Me.pnlFooter)
+        Me.Controls.Add(Me.pnlMaster)
+        Me.Controls.Add(Me.pnlFilterTop)
+        Me.Controls.Add(Me.pnlHeader)
+        Me.Font = New System.Drawing.Font("Segoe UI", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MinimumSize = New System.Drawing.Size(1000, 710)
+        Me.Name = "FormRiwayat"
+        Me.pnlHeader.ResumeLayout(False)
+        Me.pnlHeader.PerformLayout()
+        Me.pnlFilterTop.ResumeLayout(False)
+        Me.pnlFilter.ResumeLayout(False)
+        Me.pnlFilter.PerformLayout()
+        Me.pnlMaster.ResumeLayout(False)
+        Me.pnlMaster.PerformLayout()
+        CType(Me.dgvTransaksi, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlDetail.ResumeLayout(False)
+        Me.pnlDetail.PerformLayout()
+        CType(Me.dgvDetail, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlFooter.ResumeLayout(False)
+        Me.pnlFooter.PerformLayout()
+        Me.ResumeLayout(False)
+
+    End Sub
+
+    Friend WithEvents pnlHeader As System.Windows.Forms.Panel
+    Friend WithEvents pnlFilterTop As System.Windows.Forms.Panel
+    Friend WithEvents lblIkon As System.Windows.Forms.Label
+    Friend WithEvents lblJudul As System.Windows.Forms.Label
+    Friend WithEvents pnlFilter As System.Windows.Forms.Panel
+    Friend WithEvents lblDari As System.Windows.Forms.Label
+    Friend WithEvents dtpDari As System.Windows.Forms.DateTimePicker
+    Friend WithEvents lblSampai As System.Windows.Forms.Label
+    Friend WithEvents dtpSampai As System.Windows.Forms.DateTimePicker
+    Friend WithEvents btnTerapkan As Global.Kasir_Warung.TombolBulat
+    Friend WithEvents lblPendapatan As System.Windows.Forms.Label
+    Friend WithEvents lblTotalPendapatan As System.Windows.Forms.Label
+    Friend WithEvents pnlMaster As Global.Kasir_Warung.PanelBulat
+    Friend WithEvents lblMaster As System.Windows.Forms.Label
+    Friend WithEvents dgvTransaksi As System.Windows.Forms.DataGridView
+    Friend WithEvents colNoTransaksi As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colTanggal As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colTotal As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colBayar As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colKembali As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents pnlDetail As Global.Kasir_Warung.PanelBulat
+    Friend WithEvents lblDetail As System.Windows.Forms.Label
+    Friend WithEvents dgvDetail As System.Windows.Forms.DataGridView
+    Friend WithEvents colDNo As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colDKode As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colDNama As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colDJumlah As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colDHarga As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents colDSubtotal As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents pnlFooter As System.Windows.Forms.Panel
+    Friend WithEvents lblJudulDetail As System.Windows.Forms.Label
+    Friend WithEvents btnTutup As Global.Kasir_Warung.TombolBulat
+
+End Class
